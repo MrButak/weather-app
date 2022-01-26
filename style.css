@@ -3,7 +3,6 @@
 * {
     box-sizing: border-box;
     margin: 0px;
-    /* padding: 0px; */
     /*univeral fluid text size*/
     font-size: 1.1875rem;
     font-size: clamp(1.1875rem, 1.175rem + 0.0625vw, 1.25rem);
@@ -19,14 +18,18 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    
-
 }
+
 #searchCityForm {
     display: flex;
-    
-    gap: 10px;
 }
+
+#submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #dataWrapper {
     display: none;
     flex-direction: column;

@@ -1,3 +1,4 @@
+// global variables
 let searchCityForm = document.getElementById('searchCityForm');
 let errorMessage = document.getElementById('errorMessage');
 let city = document.getElementById('city');
@@ -47,8 +48,11 @@ async function getData(event) {
 
     event.preventDefault();
     errorMessage.textContent = "";
+    
+    // get input from the form
     let city = event.srcElement[0].value;
     
+    // api call
     let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=65388c50a787be295df1ae5b1f2c37ea`, {mode: 'cors'});
     let data = await response.json();
     
@@ -57,7 +61,6 @@ async function getData(event) {
         errorMessage.textContent = data.message;
         dataWrapper.style.display = "";
         searchCityForm.reset();
-        
         return;
     };
     
