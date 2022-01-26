@@ -1,6 +1,8 @@
+let ldToMemory = require('../public/javascripts/ldtomemory')
+
 exports.index = (req, res, next) => {
-    console.log("ok it's working");
-    res.render('index')
+    ldToMemory.loadData();
+    res.render('index');
 };
 
   
