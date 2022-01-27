@@ -19,24 +19,30 @@
       </form>
   </div>
 
+  <p id=testy></p>
+
   <script>
-    let char = document.getElementById('searchCity').value;
+    let textInput = document.getElementById('searchCity');
     var xhr = new XMLHttpRequest();
     
     document.getElementById('searchCity').addEventListener('input', (e) => {
       
+      if(e.data) {
+        
+      }
       xhr.open("POST", '/searchcity', true);
-      
       xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
       xhr.onreadystatechange = function() { // Call a function when the state changes.
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            //xhr.responseText
+          
+            let cityObjs = JSON.parse(xhr.responseText);
             
+            document.getElementById('testy').textContent = cityObjs[0].name
         }
       }
-      xhr.send("searchCity=" + e.data);
-      console.log(e.data)
+      xhr.send("searchCity=" + textInput.value);
+      
     });
 
   </script>
