@@ -6,9 +6,10 @@ exports.searchByName = (cityName) => {
     // SELECT name FROM cities WHERE name LIKE (?);
     let db = new Database('citylist.db', {verbose: console.log});
 	try {
-		let statement = db.prepare('SELECT name FROM cities LIMIT 10');
-		let city = statement.all();
+		let statement = db.prepare('SELECT name FROM cities WHERE name LIKE (?) LIMIT 10');
+		let city = statement.all("%" + cityName + "%");
 		db.close();
+		console.log(city)
 		return city;
 	} catch (e) {
 		console.log(e);
