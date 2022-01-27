@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" href="/public/stylesheets/style.css"> -->
 </head>
   
   <body>
@@ -19,9 +19,28 @@
       </form>
   </div>
 
-  <% if(post){%>
-    <h5><%= tmp %></h5>
-  <%}%>
+  <script>
+    let char = document.getElementById('searchCity').value;
+    var xhr = new XMLHttpRequest();
+    
+    document.getElementById('searchCity').addEventListener('input', (e) => {
+      
+      xhr.open("POST", '/searchcity', true);
+      
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            //xhr.responseText
+            
+        }
+      }
+      xhr.send("searchCity=" + e.data);
+      console.log(e.data)
+    });
+
+  </script>
+  
 
   <p id="errorMessage" style="text-align: center;"></p>
 

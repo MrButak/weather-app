@@ -8,10 +8,9 @@ exports.index = (req, res, next) => {
 
 exports.searchCity = (req, res, next) => {
 
-    console.log(req.body)
+    console.log(req)
     let post = true;
     let cities = cityManager.searchByName(req.body.searchCity);
-    res.render('index', {tmp: cities[0].name, post: post})
+    res.status(200).json(cities)
     
-	// res.json(cities);
 };
