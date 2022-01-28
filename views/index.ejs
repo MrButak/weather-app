@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
   <body>
@@ -25,8 +25,16 @@
   <ul id=liveSearchResults>
   </ul>
 
-  <!-- if API call went bad, or any other errors happened-->
-  <p id="errorMessage" style="text-align: center;"></p>
+    <!-- if API call went bad, or any other errors happened-->
+    <p id="errorMessage" style="text-align: center;"></p>
+
+    <!-- div will display all weather information for selected city-->
+    <div id="dataWrapper">
+        <p id="city"></p>
+        <img id="weatherImg">
+        <p id=temp></p>
+        <button id="tempUnit">F/C</button>
+    </div>
 
   </body>
 </html>
