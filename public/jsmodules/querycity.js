@@ -1,26 +1,16 @@
-let queryCity = () => {
+let queryCity = (xhr, textInput, countryInput, searchList) => {
 
-    
-    var xhr = new XMLHttpRequest();
     xhr.open("POST", '/searchcity', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    let textInput = document.getElementById('searchCity');
-    let searchList = document.getElementById('liveSearchResults');
-    let countryInput = document.getElementById('searchCountry');
     
     // if a POST request happens
     xhr.onreadystatechange = function() { // Call a function when the state changes.
 
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 
-            // check to see if DOM list of cities contains anything, if so, remove them
-            if(searchList.childElementCount > 0) {
-                let first = searchList.firstElementChild;
-                while(first) {
-                    first.remove();
-                    first = searchList.firstElementChild;
-                };
-            };
+            
+            // clear old search results
+            clearSearchResults(searchList)
 
             // the returned object(s) from the database query
             let cityObjs = JSON.parse(xhr.responseText);
@@ -42,9 +32,11 @@ let queryCity = () => {
                         li.setAttribute('data-cityid', cityObjs[i].cityid);
 
                         li.onclick = (e) => {
-                            // TODO: clear out live search results and clear field
+                            // clear search results
+                            clearSearchResults(searchList)
                             fetchApi(e)
                         };
+
                         searchList.appendChild(li);
                     }
                     else {
@@ -53,7 +45,8 @@ let queryCity = () => {
                         li.setAttribute('data-cityid', cityObjs[i].cityid);
 
                         li.onclick = (e) => {
-                            // TODO: clear out live search results and clear field
+                            // clear search results
+                            clearSearchResults(searchList)
                             fetchApi(e);
                         };
                         searchList.appendChild(li);

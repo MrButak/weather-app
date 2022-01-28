@@ -44,11 +44,17 @@
 
 <!---------------------------- Start Javascript ------------------------------>
 
-<!-- Function handles city search -->
+<!-- Function handles city search and search country -->
 <script type="module">
 
     import queryCity from "./jsmodules/querycity.js";
     import queryCountry from "./jsmodules/querycountry.js";
+
+    var xhr = new XMLHttpRequest();
+    let textInput = document.getElementById('searchCity');
+    let searchList = document.getElementById('liveSearchResults');
+    let countryInput = document.getElementById('searchCountry');
+    let countryList = document.getElementById('countrySearchResults');
 
     let reAlpha = /^[a-z]+$/i;
     
@@ -57,8 +63,7 @@
 
         // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
-            
-            queryCity();
+            queryCity(xhr, textInput, countryInput, searchList);
         }
         return;
     });
@@ -66,9 +71,12 @@
     // query country
     document.getElementById('searchCountry').addEventListener('input', (event) => {
         
+        // remove search list for cities
+        clearSearchResults(searchList)
+
         if(reAlpha.test(event.data)) {
-            queryCountry();
-        }
+            queryCountry(xhr, countryInput, countryList, searchList);
+        };
     });
 
 
@@ -76,7 +84,8 @@
 
 
 <script>
-    let searchCityForm = document.getElementById('searchCityForm');
+    // variables for view data
+    
     let errorMessage = document.getElementById('errorMessage');
     let city = document.getElementById('city');
     let temp = document.getElementById('temp');
@@ -126,13 +135,10 @@
 </script>
 
 <!-- function makes api call to get weather data -->
-
 <script>
     async function fetchApi(e) {
 
-        //event.preventDefault();
-        //errorMessage.textContent = "";
-
+        
         // get input from the form
         let cityId = e.target.dataset.cityid;
 
@@ -145,14 +151,27 @@
         if(!response.ok) {
             errorMessage.textContent = data.message;
             dataWrapper.style.display = "";
-            searchCityForm.reset();
+            searchCity.value = "";
             // TODO send error message to DOM
             return;
         };
-
-        searchCityForm.reset();
+        
+        searchCity.value = ""
         return(displayData(data))
     };
 </script>
 
+<!-- Function will clear search results -->
+<script>
+    let clearSearchResults = (list) => {
 
+        // check to see if DOM list of cities contains anything, if so, remove them
+        if(list.childElementCount > 0) {
+                let first = list.firstElementChild;
+                while(first) {
+                    first.remove();
+                    first = list.firstElementChild;
+                };
+        };
+    }
+</script>

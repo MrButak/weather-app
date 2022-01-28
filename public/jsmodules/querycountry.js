@@ -1,12 +1,9 @@
 
-let queryCountry = () => {
+let queryCountry = (xhr, countryInput, countryList, searchList) => {
     
-    var xhr = new XMLHttpRequest();
     xhr.open("POST", '/searchcountry', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    let countryInput = document.getElementById('searchCountry');
-    let countryList = document.getElementById('countrySearchResults');
-
+    
     // if a POST request happens
     xhr.onreadystatechange = function() { // Call a function when the state changes.
 
@@ -25,9 +22,7 @@ let queryCountry = () => {
 
             // the returned object(s) from the database query
             let countryObjs = JSON.parse(xhr.responseText);
-            console.log("I'm here in querycountry.js module")
-            console.log(countryObjs)
-
+            
             // check if cityObjs has anything to display
             if(countryObjs.length > 0) {
                 
@@ -41,19 +36,13 @@ let queryCountry = () => {
                     
 
                     li.onclick = (e) => {
-                        // TODO: clear out live search results for city
-                        // searchCountry.value =
-                        // console.log("the click event")
-                        // console.log(e.target.innerHTML)
+
                         countryInput.value = e.target.innerHTML;
                         if(countryList.childElementCount > 0) {
-
-                            let first = countryList.firstElementChild;
-            
-                            while(first) {
-                                first.remove();
-                                first = countryList.firstElementChild;
-                            };
+                            
+                            // clear search results
+                            clearSearchResults(countryList)
+                            
                         };
                     };
                     countryList.appendChild(li);
