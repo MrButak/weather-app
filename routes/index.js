@@ -5,9 +5,9 @@ const index = require('../controllers/index')
 
 router.get('/', index.index);
 
-// live search POST route
+// POST route for city search
 router.post('/searchcity', index.searchCity);
 
-// live search POST route
+// POST route for country search
 router.post('/searchcountry', index.searchCountry);
 module.exports = router;

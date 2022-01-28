@@ -44,7 +44,7 @@
 
 <!---------------------------- Start Javascript ------------------------------>
 
-<!-- Function handles city search and search country -->
+<!-- Function handles city and country search -->
 <script type="module">
 
     import queryCity from "./jsmodules/querycity.js";
@@ -55,10 +55,9 @@
     let searchList = document.getElementById('liveSearchResults');
     let countryInput = document.getElementById('searchCountry');
     let countryList = document.getElementById('countrySearchResults');
-
     let reAlpha = /^[a-z]+$/i;
     
-    // query city
+    // Search city text input
     document.getElementById('searchCity').addEventListener('input', (event) => {
 
         // only letters a-z will trigger database query
@@ -68,24 +67,38 @@
         return;
     });
 
-    // query country
+    // Search country text input
     document.getElementById('searchCountry').addEventListener('input', (event) => {
         
         // remove search list for cities
         clearSearchResults(searchList)
 
+        // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
             queryCountry(xhr, countryInput, countryList, searchList);
         };
     });
 
-
 </script>
 
+<!-- Function removes search result list from the DOM -->
+<script>
+    let clearSearchResults = (list) => {
 
+        // check to see if DOM list of cities contains anything, if so, remove them
+        if(list.childElementCount > 0) {
+            let first = list.firstElementChild;
+            while(first) {
+                first.remove();
+                first = list.firstElementChild;
+            };
+        };
+    };
+</script>
+
+<!--------------- API call and display weather results ---------------->
 <script>
     // variables for view data
-    
     let errorMessage = document.getElementById('errorMessage');
     let city = document.getElementById('city');
     let temp = document.getElementById('temp');
@@ -94,7 +107,7 @@
     let fah;
 </script>
 
-<!-- Function converts temp between fan/cel with button -->
+<!-- Function converts temp between fah/cel with button -->
 <script>
     let convertTemp = (kelvin) => {
 
@@ -112,8 +125,9 @@
 };
 </script>
 
-<!-- function displays city weather to the DOM -->
+<!-- Function displays city weather to the DOM -->
 <script>
+    //TODO: display more data. e.g. high and low temp, wind, sunrise/sunset times
     let displayData = (data) => {
     console.log(data)
     // show the data div index.html
@@ -138,12 +152,10 @@
 <script>
     async function fetchApi(e) {
 
-        
         // get input from the form
         let cityId = e.target.dataset.cityid;
 
         // api call
-        // api.openweathermap.org/data/2.5/weather?id={city id}&appid={API key}
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=65388c50a787be295df1ae5b1f2c37ea`, {mode: 'cors'});
         let data = await response.json();
 
@@ -159,19 +171,4 @@
         searchCity.value = ""
         return(displayData(data))
     };
-</script>
-
-<!-- Function will clear search results -->
-<script>
-    let clearSearchResults = (list) => {
-
-        // check to see if DOM list of cities contains anything, if so, remove them
-        if(list.childElementCount > 0) {
-                let first = list.firstElementChild;
-                while(first) {
-                    first.remove();
-                    first = list.firstElementChild;
-                };
-        };
-    }
 </script>

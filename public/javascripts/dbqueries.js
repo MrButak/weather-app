@@ -20,7 +20,6 @@ exports.searchByName = (cityName, countryName) => {
 // Query DB for countries
 exports.searchByCountry = (countryName) => {
 
-    console.log("I'm in searchByCountry", countryName);
     let db = new Database('citylist.db', {verbose: console.log});
 
 	try {

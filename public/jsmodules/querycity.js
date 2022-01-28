@@ -18,13 +18,18 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
             // check if cityObjs has anything to display
             if(cityObjs.length > 0) {
                 
-                // display city data to the dom, add onclick, and data attribute of cityid (for precise api call)
+                // check if city text input is blank (if the user delete search text) if so don't display any results
+                if(textInput.value == "") {
+                    return
+                };
+
+                // display city data to the DOM (search city list), add onclick, and data attribute of cityid (for precise api call)
                 for(let i = 0; i < cityObjs.length; i++) {
                     
                     let li = document.createElement('li');
                     let a = document.createElement('a');
 
-                    // handle cities with state names
+                    // display cities with state names
                     if(cityObjs[i].state) {
 
                         li.textContent = cityObjs[i].name + ", " + cityObjs[i].state + " , " + cityObjs[i].country;
@@ -39,7 +44,7 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
 
                         searchList.appendChild(li);
                     }
-                    // handle cites with no state names
+                    // display cites with no state names
                     else {
 
                         li.textContent = cityObjs[i].name + " | Country " + cityObjs[i].country;
