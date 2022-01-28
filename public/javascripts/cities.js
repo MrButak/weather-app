@@ -5,15 +5,16 @@ exports.searchByName = (cityName, countryName) => {
 
 	console.log(cityName);
     let db = new Database('citylist.db', {verbose: console.log});
+
 	try {
 		let statement = db.prepare('SELECT * FROM cities WHERE name LIKE (?) AND country = (?) LIMIT 30');
 		let city = statement.all(cityName + "%", countryName);
 		db.close();
 		return city;
-	} 
+	}
     catch (e) {
 		console.log(e);
-	}
+	};
 };
 
 // Query DB for countries
@@ -21,6 +22,7 @@ exports.searchByCountry = (countryName) => {
 
     console.log("I'm in searchByCountry", countryName);
     let db = new Database('citylist.db', {verbose: console.log});
+
 	try {
 		let statement = db.prepare('SELECT DISTINCT country FROM cities WHERE country LIKE (?) LIMIT 30');
 		let country = statement.all(countryName + "%");
@@ -29,5 +31,5 @@ exports.searchByCountry = (countryName) => {
 	} 
     catch (e) {
 		console.log(e);
-	}
-}
+	};
+};

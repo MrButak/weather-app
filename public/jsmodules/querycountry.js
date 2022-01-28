@@ -4,26 +4,18 @@ let queryCountry = (xhr, countryInput, countryList, searchList) => {
     xhr.open("POST", '/searchcountry', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
-    // if a POST request happens
+    // If a POST request happens
     xhr.onreadystatechange = function() { // Call a function when the state changes.
 
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 
-            // check to see if DOM list of cities contains anything, if so, remove them
-            if(countryList.childElementCount > 0) {
-
-                let first = countryList.firstElementChild;
-
-                while(first) {
-                    first.remove();
-                    first = countryList.firstElementChild;
-                };
-            };
-
+            // clear old search results
+            clearSearchResults(countryList)
+            
             // the returned object(s) from the database query
             let countryObjs = JSON.parse(xhr.responseText);
             
-            // check if cityObjs has anything to display
+            // check if countryObjs has anything to display
             if(countryObjs.length > 0) {
                 
                 // display city data to the dom, add onclick, and data attribute of cityid (for precise api call)
@@ -34,17 +26,14 @@ let queryCountry = (xhr, countryInput, countryList, searchList) => {
 
                     li.textContent = countryObjs[i].country;
                     
-
+                    // when country is clicked, set that country as the value and clear search list
                     li.onclick = (e) => {
 
-                        countryInput.value = e.target.innerHTML;
-                        if(countryList.childElementCount > 0) {
-                            
-                            // clear search results
-                            clearSearchResults(countryList)
-                            
-                        };
+                        countryInput.value = e.target.innerHTML; 
+                        // clear search results
+                        clearSearchResults(countryList)
                     };
+
                     countryList.appendChild(li);
                 
                 };

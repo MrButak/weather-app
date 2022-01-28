@@ -3,13 +3,12 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
     xhr.open("POST", '/searchcity', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
-    // if a POST request happens
+    // If a POST request happens
     xhr.onreadystatechange = function() { // Call a function when the state changes.
 
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 
-            
-            // clear old search results
+            // clear previous search results
             clearSearchResults(searchList)
 
             // the returned object(s) from the database query
@@ -28,9 +27,10 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
                     // handle cities with state names
                     if(cityObjs[i].state) {
 
-                        li.textContent = cityObjs[i].name + ", " + cityObjs[i].state + " | Country " + cityObjs[i].country;
+                        li.textContent = cityObjs[i].name + ", " + cityObjs[i].state + " , " + cityObjs[i].country;
                         li.setAttribute('data-cityid', cityObjs[i].cityid);
 
+                        // When a city name is clicked
                         li.onclick = (e) => {
                             // clear search results
                             clearSearchResults(searchList)
@@ -39,11 +39,13 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
 
                         searchList.appendChild(li);
                     }
+                    // handle cites with no state names
                     else {
 
                         li.textContent = cityObjs[i].name + " | Country " + cityObjs[i].country;
                         li.setAttribute('data-cityid', cityObjs[i].cityid);
 
+                        // When a city name is clicked
                         li.onclick = (e) => {
                             // clear search results
                             clearSearchResults(searchList)
@@ -56,7 +58,7 @@ let queryCity = (xhr, textInput, countryInput, searchList) => {
         };
     };
 
-    // send text input value to database for query
+    // send text input values (city, country) to DB for query
     xhr.send("searchCity=" + textInput.value + "&searchCountry=" + countryInput.value);
     
 };
