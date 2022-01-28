@@ -6,6 +6,7 @@ let queryCity = () => {
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     let textInput = document.getElementById('searchCity');
     let searchList = document.getElementById('liveSearchResults');
+    let countryInput = document.getElementById('searchCountry');
     
     // if a POST request happens
     xhr.onreadystatechange = function() { // Call a function when the state changes.
@@ -63,7 +64,7 @@ let queryCity = () => {
     };
 
     // send text input value to database for query
-    xhr.send("searchCity=" + textInput.value);
+    xhr.send("searchCity=" + textInput.value + "&searchCountry=" + countryInput.value);
     
 };
 

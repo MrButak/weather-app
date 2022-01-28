@@ -16,14 +16,16 @@
     <div class="formWrapper">
         <form method="POST" action="/searchcity" id="searchCityForm">
             <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
-            <!-- IDEA: get rid of submit button and make user click city name displayed from database-->
-            <!-- <button type="submit" id="submit"><i class="material-icons">search</i></button> -->
-            <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" required>
+            
+            <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" required>
         </form>
     </div>
 
   <!-- live seach list -->
   <ul id=liveSearchResults>
+  </ul>
+  <ul id="countrySearchResults">
+
   </ul>
 
     <!-- if API call went bad, or any other errors happened-->
@@ -46,8 +48,11 @@
 <script type="module">
 
     import queryCity from "./jsmodules/querycity.js";
+    import queryCountry from "./jsmodules/querycountry.js";
+
     let reAlpha = /^[a-z]+$/i;
-  // detect any changes on input text field
+    
+    // query city
     document.getElementById('searchCity').addEventListener('input', (event) => {
 
         // only letters a-z will trigger database query
@@ -55,19 +60,20 @@
             
             queryCity();
         }
-    
         return;
     });
-</script>
-<!-- Function handles country search -->
-<script type="module">
 
-    import queryCountry from "./jsmodules/querycountry.js";
+    // query country
     document.getElementById('searchCountry').addEventListener('input', (event) => {
-        console.log(event)
+        
+        if(reAlpha.test(event.data)) {
+            queryCountry();
+        }
     });
 
+
 </script>
+
 
 <script>
     let searchCityForm = document.getElementById('searchCityForm');
