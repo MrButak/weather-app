@@ -1,3 +1,11 @@
 <!-- <% if(post){%>
     <h5><%= tmp %></h5>
   <%}%> -->
+
+  <!-- div will display all weather information for selected city-->
+  <div id="dataWrapper">
+      <p id="city"></p>
+      <img id="weatherImg">
+      <p id=temp></p>
+      <button id="tempUnit">F/C</button>
+  </div>

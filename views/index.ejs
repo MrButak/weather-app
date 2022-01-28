@@ -5,37 +5,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-    <link rel="stylesheet" href="/public/stylesheets/style.css"> -->
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
 </head>
 
   <body>
     <h2>Weather App</h2>
-    <div class="formWrapper">
-      <form method="POST" action="/searchcity" id="searchCityForm">
-          <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
-          <button type="submit" id="submit"><i class="material-icons">search</i></button>
-      </form>
-  </div>
 
+    <div class="formWrapper">
+        <form method="POST" action="/searchcity" id="searchCityForm">
+            <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
+            <!-- IDEA: get rid of submit button and make user click city name displayed from database-->
+            <button type="submit" id="submit"><i class="material-icons">search</i></button>
+        </form>
+    </div>
+
+  <!-- live seach list -->
   <ul id=liveSearchResults>
-    
   </ul>
 
+  <!-- if API call went bad, or any other errors happened-->
   <p id="errorMessage" style="text-align: center;"></p>
 
-  <!-- div will display all weather information for selected city-->
-  <div id="dataWrapper">
-      <p id="city"></p>
-      <img id="weatherImg">
-      <p id=temp></p>
-      <button id="tempUnit">F/C</button>
-  </div>
-    
   </body>
 </html>
 
+<!---------------------------- Start Javascript ------------------------------>
+
+<!-- js to handle live search -->
 <script>
 
   let textInput = document.getElementById('searchCity');
@@ -43,7 +41,7 @@
   let reAlpha = /^[a-z]+$/i;
   var xhr = new XMLHttpRequest();
 
-  // event listener to detect any changes in input text field
+  // detect any changes on input text field
   document.getElementById('searchCity').addEventListener('input', (event) => {
 
     // only letters a-z will trigger database query
@@ -52,7 +50,7 @@
         xhr.open("POST", '/searchcity', true);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         
-        // if a POST request
+        // if a POST request happens
         xhr.onreadystatechange = function() { // Call a function when the state changes.
 
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
@@ -68,28 +66,131 @@
 
                 // the returned object(s) from the database query
                 let cityObjs = JSON.parse(xhr.responseText);
+                console.log(cityObjs)
 
                 // check if cityObjs has anything to display
                 if(cityObjs.length > 0) {
-                
+                    
+                    // display city data to the dom, add onclick, and data attribute of cityid (for precise api call)
                     for(let i = 0; i < cityObjs.length; i++) {
                         
                         let li = document.createElement('li');
-                        li.textContent = cityObjs[i].name;
-                        searchList.appendChild(li);
+                        let a = document.createElement('a');
+
+                        // handle cities with state names
+                        if(cityObjs[i].state) {
+
+                            li.textContent = cityObjs[i].name + ", " + cityObjs[i].state + " | Country " + cityObjs[i].country;
+                            li.setAttribute('data-cityid', cityObjs[i].cityid);
+
+                            li.onclick = (e) => {
+                                // TODO: clear out live search results and clear field
+                                fetchApi(e)
+                            };
+                            searchList.appendChild(li);
+                        }
+                        else {
+
+                            li.textContent = cityObjs[i].name + " | Country " + cityObjs[i].country;
+                            li.setAttribute('data-cityid', cityObjs[i].cityid);
+
+                            li.onclick = (e) => {
+                                // TODO: clear out live search results and clear field
+                                fetchApi(e);
+                            };
+                            searchList.appendChild(li);
+                        };
                     };
                 };
             };
         };
 
-        // send POST request with value of text input for database query
-        // TODO: filter out every character except a-z and white space
+        // send text input value to database for query
         xhr.send("searchCity=" + textInput.value);
     }
     
     return;
 });
+</script>
 
+<script>
+    let searchCityForm = document.getElementById('searchCityForm');
+    let errorMessage = document.getElementById('errorMessage');
+    let city = document.getElementById('city');
+    let temp = document.getElementById('temp');
+    let dataWrapper = document.getElementById('dataWrapper');
+    let weatherImg = document.getElementById('weatherImg');
+    let fah;
+</script>
+
+<!-- Function converts temp between fan/cel with button -->
+<script>
+    let convertTemp = (kelvin) => {
+
+    // For celcius
+    if(fah) {
+        fah = false;
+        temp.textContent = Math.round(kelvin - 273.15) + " C"; 
+    }
+
+    // For fahrenheit
+    else {
+        fah = true;
+        temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
+    };
+};
+</script>
+
+<!-- function displays city weather to the DOM -->
+<script>
+    let displayData = (data) => {
+    console.log(data)
+    // show the data div index.html
+    dataWrapper.style.display = "flex";
+
+    city.textContent = data.name;
+    weatherImg.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+    // default display temp in fahrenheit
+    fah = false;
+    convertTemp(data.main.temp);
+    
+    // toggle temp unit
+    document.getElementById('tempUnit').onclick = () => {
+
+        convertTemp(data.main.temp);      
+    };
+};
+</script>
+
+<!-- function makes api call to get weather data -->
+
+<script>
+    async function fetchApi(e) {
+
+        //event.preventDefault();
+        //errorMessage.textContent = "";
+
+        // get input from the form
+        let cityId = e.target.dataset.cityid;
+
+        // api call
+        // api.openweathermap.org/data/2.5/weather?id={city id}&appid={API key}
+        let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=65388c50a787be295df1ae5b1f2c37ea`, {mode: 'cors'});
+        let data = await response.json();
+
+        // handle errors
+        if(!response.ok) {
+            errorMessage.textContent = data.message;
+            dataWrapper.style.display = "";
+            searchCityForm.reset();
+            // TODO send error message to DOM
+            return;
+        };
+
+        searchCityForm.reset();
+        return(displayData(data))
+    };
 </script>
 
 

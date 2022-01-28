@@ -1,17 +1,17 @@
 const Database = require('better-sqlite3');
 
-// Query DB to find cities that start with cityName
+// Query DB to find cities like user input
 exports.searchByName = (cityName) => {
+
 	console.log(cityName);
-    // SELECT name FROM cities WHERE name LIKE (?);
     let db = new Database('citylist.db', {verbose: console.log});
 	try {
-		let statement = db.prepare('SELECT name FROM cities WHERE name LIKE (?) LIMIT 15');
+		let statement = db.prepare('SELECT * FROM cities WHERE name LIKE (?) LIMIT 30');
 		let city = statement.all(cityName + "%");
 		db.close();
-		console.log(city)
 		return city;
-	} catch (e) {
+	} 
+    catch (e) {
 		console.log(e);
 	}
 };
