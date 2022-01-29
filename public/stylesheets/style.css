@@ -14,34 +14,49 @@
 /* search */
 .formWrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 100%;
+    
 }
 
 #searchCityForm {
     display: inline-flex;
+    flex-direction: column;
     justify-content: center;
     
 }
-
+.formInputWrapper {
+    display: inline-flex;
+    flex-direction: row;
+}
 #currLocationBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    border-radius: 0;
 }
 #searchCity {
     width: 70%;
+    border-radius: 0;
 }
 #searchCountry {
     width: 44px;
+    border-radius: 0;
 }
 #citySearchResults , #countrySearchResults {
     padding: 0;
     list-style: none;
 }
-
+.searchResultsWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 89%;
+    border: 1px solid black;
+    border-top: none;
+}
 /* weather results */
 #dataWrapper {
     display: none;

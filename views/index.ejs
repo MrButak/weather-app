@@ -15,20 +15,23 @@
 
     <div class="formWrapper">
         <form method="POST" action="/searchcity" id="searchCityForm">
-            <button id="currLocationBtn"><span class="material-icons">my_location</span></button>
-            <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
-            <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" required>
+            <div class="formInputWrapper">
+                <button id="currLocationBtn"><span class="material-icons">my_location</span></button>
+                <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
+                <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" required>
+            </div>
+            <div class="searchResultsWrapper">
+                <ul id=citySearchResults></ul>
+                <ul id="countrySearchResults"></ul>
+            </div>
         </form>
+        
+        
     </div>
 
-  <!-- live seach list -->
-  <ul id=citySearchResults>
-  </ul>
-  <ul id="countrySearchResults">
 
-  </ul>
 
-    <!-- if API call went bad, or any other errors happened-->
+    <!-- if API call error, or any errors happened-->
     <p id="errorMessage" style="text-align: center;"></p>
 
     <!-- div will display all weather information for selected city-->
