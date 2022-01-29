@@ -83,10 +83,7 @@ header {
     align-items: center;
     justify-content: center;
     background-color: #41AEA9;
-    padding: 10px 0;
     border-bottom: 1px solid #213E3B;
-    
-    padding: 0px 35px 0px 0;
     /* anything besides 124px height will not work out with current layout */
     height: 124px;
 }
