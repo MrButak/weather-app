@@ -15,14 +15,14 @@
 
     <div class="formWrapper">
         <form method="POST" action="/searchcity" id="searchCityForm">
+            <button id="currLocationBtn"><span class="material-icons">my_location</span></button>
             <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
-            
             <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" required>
         </form>
     </div>
 
   <!-- live seach list -->
-  <ul id=liveSearchResults>
+  <ul id=citySearchResults>
   </ul>
   <ul id="countrySearchResults">
 
@@ -52,7 +52,7 @@
 
     var xhr = new XMLHttpRequest();
     let textInput = document.getElementById('searchCity');
-    let searchList = document.getElementById('liveSearchResults');
+    let searchList = document.getElementById('citySearchResults');
     let countryInput = document.getElementById('searchCountry');
     let countryList = document.getElementById('countrySearchResults');
     let reAlpha = /^[a-z]+$/i;

@@ -11,27 +11,38 @@
     overflow-x: hidden;
     min-height: 100vh;
 }
-
+/* search */
 .formWrapper {
     display: flex;
-    
     justify-content: center;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 
 #searchCityForm {
-    display: flex;
+    display: inline-flex;
+    justify-content: center;
+    
 }
 
-#submit {
-    display: flex;
+#currLocationBtn {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-#searchCountry {
-    width: 10%;
+#searchCity {
+    width: 70%;
 }
+#searchCountry {
+    width: 44px;
+}
+#citySearchResults , #countrySearchResults {
+    padding: 0;
+    list-style: none;
+}
+
+/* weather results */
 #dataWrapper {
     display: none;
     flex-direction: column;
