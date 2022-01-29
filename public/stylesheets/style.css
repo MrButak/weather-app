@@ -19,6 +19,7 @@
     align-items: center;
     text-align: center;
     
+    
 }
 
 #searchCityForm {
@@ -30,6 +31,7 @@
 .formInputWrapper {
     display: inline-flex;
     flex-direction: row;
+    justify-content: center;
 }
 #currLocationBtn {
     display: inline-flex;
@@ -39,24 +41,36 @@
 }
 #searchCity {
     width: 70%;
+    border-left: none;
+    border-right: none;
     border-radius: 0;
 }
 #searchCountry {
     width: 44px;
     border-radius: 0;
+    text-align: center;
 }
 #citySearchResults , #countrySearchResults {
     padding: 0;
     list-style: none;
 }
-.searchResultsWrapper {
+.searchResultsWrapperMain {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 89%;
-    border: 1px solid black;
-    border-top: none;
+    
 }
+.searchResultsWrapper {
+    border: 1px solid black;
+    width: 89.5%;
+}
+li {
+    transition: ease-in-out;
+}
+li:hover {
+    background-color: cadetblue;
+}
+
 /* weather results */
 #dataWrapper {
     display: none;
