@@ -9,7 +9,10 @@
 }
 * body {
     overflow-x: hidden;
+    /* background-image: url("/img/clouds.gif"); */
     min-height: 100vh;
+    background-color: #E8FFFF;
+
 }
 /* search */
 .formWrapper {
@@ -18,15 +21,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    
-    
+    margin-top: -33px;
 }
-
 #searchCityForm {
     display: inline-flex;
     flex-direction: column;
-    justify-content: center;
-    
+    justify-content: center; 
 }
 .formInputWrapper {
     display: inline-flex;
@@ -38,17 +38,20 @@
     align-items: center;
     justify-content: center;
     border-radius: 0;
+    border-color: #213E3B;
 }
 #searchCity {
     width: 70%;
     border-left: none;
     border-right: none;
     border-radius: 0;
+    border-color: #213E3B;
 }
 #searchCountry {
     width: 44px;
     border-radius: 0;
     text-align: center;
+    border-color: #213E3B;
 }
 #citySearchResults , #countrySearchResults {
     padding: 0;
@@ -58,23 +61,72 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
 }
 .searchResultsWrapper {
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    background-color: #E8FFFF;
     width: 89.5%;
 }
+
+
 li {
     transition: ease-in-out;
 }
 li:hover {
-    background-color: cadetblue;
+    background-color: #A6F6F1;
 }
 
+/* header */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #41AEA9;
+    padding: 10px 0;
+    border-bottom: 1px solid #213E3B;
+    
+    padding: 0px 35px 0px 0;
+    /* anything besides 124px height will not work out with current layout */
+    height: 124px;
+}
+.appTitle {
+    color: #213E3B;
+}
+/*footer start*/
+.footerWrapper {
+    /* display: flex;
+    flex-direction: column; */
+    width: 100%;
+    position: fixed;
+    /* left: 0; */
+    bottom: 0;
+    
+}
+
+.footerBottom {
+    background-color: black;
+    color: #E8FFFF;
+    
+}
+/*footer end*/
+
 /* weather results */
+
+.dataWrapperMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 30px;
+}
 #dataWrapper {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+
+
 }

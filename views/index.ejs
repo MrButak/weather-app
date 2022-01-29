@@ -11,7 +11,9 @@
 </head>
 
   <body>
-    <h2>Weather App</h2>
+    <header>
+        <h1 class="appTitle">Weather App</h1>
+    </header>
 
     <div class="formWrapper">
         <form method="POST" action="/searchcity" id="searchCityForm">
@@ -37,19 +39,27 @@
     <p id="errorMessage" style="text-align: center;"></p>
 
     <!-- div will display all weather information for selected city-->
-    <div id="dataWrapper">
-        <p id="city"></p>
-        <img id="weatherImg">
-        <p id=temp></p>
-        <button id="tempUnit">F/C</button>
+    <div class="dataWrapperMain">
+        <div id="dataWrapper">
+            <p id="city"></p>
+            <img id="weatherImg">
+            <p id=temp></p>
+            <button id="tempUnit">F/C</button>
+        </div>
     </div>
+
+    <footer>
+        <div class="footerWrapper">
+            <div class="footerBottom" style="text-align: center;">Weather App</div>
+        </div>
+    </footer>
 
   </body>
 </html>
 
 <!---------------------------- Start Javascript ------------------------------>
 
-<!-- Function handles city and country search -->
+<!-- code block handles city and country search -->
 <script type="module">
 
     import queryCity from "./jsmodules/querycity.js";
