@@ -40,14 +40,14 @@
     border-radius: 0;
     border-color: #213E3B;
 }
-#searchCity {
+#searchCityTextInput {
     width: 70%;
     border-left: none;
     border-right: none;
     border-radius: 0;
     border-color: #213E3B;
 }
-#searchCountry {
+#searchCountryTextInput {
     width: 44px;
     border-radius: 0;
     text-align: center;
@@ -67,8 +67,6 @@
     background-color: #E8FFFF;
     width: 89.5%;
 }
-
-
 li {
     transition: ease-in-out;
 }
@@ -76,8 +74,8 @@ li:hover {
     background-color: #A6F6F1;
 }
 
-/* header */
 
+/* header */
 header {
     display: flex;
     align-items: center;
@@ -90,17 +88,14 @@ header {
 .appTitle {
     color: #213E3B;
 }
+
 /*footer start*/
 .footerWrapper {
-    /* display: flex;
-    flex-direction: column; */
     width: 100%;
     position: fixed;
-    /* left: 0; */
     bottom: 0;
     
 }
-
 .footerBottom {
     background-color: black;
     color: #E8FFFF;
@@ -108,8 +103,8 @@ header {
 }
 /*footer end*/
 
-/* weather results */
 
+/* weather results */
 .dataWrapperMain {
     display: flex;
     flex-direction: column;
@@ -123,7 +118,4 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-
-
 }

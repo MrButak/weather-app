@@ -17,23 +17,22 @@
 
     <div class="formWrapper">
         <form method="POST" action="/searchcity" id="searchCityForm">
+
             <div class="formInputWrapper">
                 <button id="currLocationBtn"><span class="material-icons">my_location</span></button>
-                <input type="text" name="searchCity" id="searchCity" placeholder="Search City" autocomplete="off" required>
-                <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" autocomplete="off" required>
+                <input type="text" name="searchCityTextInput" id="searchCityTextInput" placeholder="Search City" autocomplete="off" required>
+                <input type="text" name="searchCountryTextInput" id="searchCountryTextInput" placeholder="US" maxlength="2" size="1" value="US" autocomplete="off" required>
             </div>
+
             <div class="searchResultsWrapperMain">
                 <div class="searchResultsWrapper">
                     <ul id=citySearchResults></ul>
                     <ul id="countrySearchResults"></ul>
                 </div>
             </div>
+
         </form>
-        
-        
     </div>
-
-
 
     <!-- if API call error, or any errors happened-->
     <p id="errorMessage" style="text-align: center;"></p>
@@ -41,9 +40,9 @@
     <!-- div will display all weather information for selected city-->
     <div class="dataWrapperMain">
         <div id="dataWrapper">
-            <p id="city"></p>
+            <p id="cityName"></p>
             <img id="weatherImg">
-            <p id=temp></p>
+            <p id=currentTemp></p>
             <button id="tempUnit">F/C</button>
         </div>
     </div>
@@ -61,38 +60,35 @@
 
 <!-- code block handles city and country search -->
 <script type="module">
-
     import {queryCity, queryCountry} from "./jsmodules/querylocations.js";
     
-    
-    let textInput = document.getElementById('searchCity');
+    let searchCityTextInput = document.getElementById('searchCityTextInput');
     let searchList = document.getElementById('citySearchResults');
-    let countryInput = document.getElementById('searchCountry');
+    let searchCountryTextInput = document.getElementById('searchCountryTextInput');
     let countryList = document.getElementById('countrySearchResults');
     let reAlpha = /^[a-z]+$/i;
     
     // Search city text input
-    document.getElementById('searchCity').addEventListener('input', (event) => {
+    searchCityTextInput.addEventListener('input', (event) => {
 
         // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
-            queryCity(textInput, countryInput, searchList);
+            queryCity(searchCityTextInput, searchCountryTextInput, searchList);
         }
         return;
     });
 
     // Search country text input
-    document.getElementById('searchCountry').addEventListener('input', (event) => {
+    searchCountryTextInput.addEventListener('input', (event) => {
         
         // remove search list for cities
         clearSearchResults(searchList)
 
         // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
-            queryCountry(countryInput, countryList, searchList);
+            queryCountry(searchCountryTextInput, searchList);
         };
     });
-
 </script>
 
 
@@ -115,8 +111,8 @@
 <script>
     // variables for view data
     let errorMessage = document.getElementById('errorMessage');
-    let city = document.getElementById('city');
-    let temp = document.getElementById('temp');
+    let cityName = document.getElementById('cityName');
+    let currentTemp = document.getElementById('currentTemp');
     let dataWrapper = document.getElementById('dataWrapper');
     let weatherImg = document.getElementById('weatherImg');
     let fahrenheit;
@@ -132,12 +128,12 @@
         // for celcius
         case true: 
             fahrenheit = false;
-            temp.textContent = Math.round(kelvin - 273.15) + " C";
+            currentTemp.textContent = Math.round(kelvin - 273.15) + " C";
 
         // for fahrenheit
         case false:
             fahrenheit = true;
-            temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
+            currentTemp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
     };
 };
 </script>
@@ -146,24 +142,24 @@
 <!-- Function displays city weather to the DOM -->
 <script>
     //TODO: display more data. e.g. high and low temp, wind, sunrise/sunset times
-    let displayWeatherData = (data) => {
+    let displayWeatherData = (weatherData) => {
 
-    console.log(data);
+    console.log(weatherData);
 
-    // show the data div index.html
+    // show the data div
     dataWrapper.style.display = "flex";
 
-    city.textContent = data.name;
-    weatherImg.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    cityName.textContent = weatherData.name;
+    weatherImg.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
 
     // default display temp in fahrenheit
     fahrenheit = false;
-    convertTemp(data.main.temp);
+    convertTemp(weatherData.main.temp);
     
     // toggle temp unit
     document.getElementById('tempUnit').onclick = () => {
 
-        convertTemp(data.main.temp);      
+        convertTemp(weatherData.main.temp);      
     };
 };
 </script>
@@ -183,12 +179,12 @@
         if(!response.ok) {
             errorMessage.textContent = data.message;
             dataWrapper.style.display = "";
-            searchCity.value = "";
+            searchCityTextInput.value = "";
             // TODO send error message to DOM
             return;
         };
         
-        searchCity.value = ""
+        searchCityTextInput.value = ""
         return(displayWeatherData(weatherData))
     };
 </script>

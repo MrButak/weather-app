@@ -1,6 +1,7 @@
-
-let queryCountry = (xhr, countryInput, countryList, searchList) => {
+// searchCountry cityList
+let queryCountry = (searchCountryTextInput, countryList) => {
     
+    var xhr = new XMLHttpRequest();
     xhr.open("POST", '/searchcountry', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
@@ -29,7 +30,7 @@ let queryCountry = (xhr, countryInput, countryList, searchList) => {
                     // when country is clicked, set that country as the value and clear search list
                     li.onclick = (e) => {
 
-                        countryInput.value = e.target.innerHTML; 
+                        searchCountryTextInput.value = e.target.innerHTML; 
                         // clear search results
                         clearSearchResults(countryList)
                     };
@@ -42,10 +43,11 @@ let queryCountry = (xhr, countryInput, countryList, searchList) => {
     };
     
     // send text input value to database for query
-    xhr.send("searchCountry=" + countryInput.value);
+    xhr.send("searchCountry=" + searchCountryTextInput.value);
 };
 
-let queryCity = (textInput, countryInput, searchList) => {
+
+let queryCity = (searchCityTextInput, searchCountryTextInput, cityList) => {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/searchcity', true);
@@ -57,7 +59,7 @@ let queryCity = (textInput, countryInput, searchList) => {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 
             // clear previous search results
-            clearSearchResults(searchList)
+            clearSearchResults(cityList)
 
             // the returned object(s) from the database query
             let cityObjs = JSON.parse(xhr.responseText);
@@ -67,7 +69,7 @@ let queryCity = (textInput, countryInput, searchList) => {
             if(cityObjs.length > 0) {
                 
                 // check if city text input is blank (if the user delete search text) if so don't display any results
-                if(textInput.value == "") {
+                if(searchCityTextInput.value == "") {
                     return
                 };
 
@@ -86,11 +88,11 @@ let queryCity = (textInput, countryInput, searchList) => {
                         // When a city name is clicked
                         li.onclick = (e) => {
                             // clear search results
-                            clearSearchResults(searchList)
+                            clearSearchResults(cityList)
                             fetchApi(e)
                         };
 
-                        searchList.appendChild(li);
+                        cityList.appendChild(li);
                     }
                     // display cites with no state names
                     else {
@@ -101,10 +103,10 @@ let queryCity = (textInput, countryInput, searchList) => {
                         // When a city name is clicked
                         li.onclick = (e) => {
                             // clear search results
-                            clearSearchResults(searchList)
+                            clearSearchResults(cityList)
                             fetchApi(e);
                         };
-                        searchList.appendChild(li);
+                        cityList.appendChild(li);
                     };
                 };
             };
@@ -112,7 +114,7 @@ let queryCity = (textInput, countryInput, searchList) => {
     };
 
     // send text input values (city, country) to DB for query
-    xhr.send("searchCity=" + textInput.value + "&searchCountry=" + countryInput.value);
+    xhr.send("searchCity=" + searchCityTextInput.value + "&searchCountry=" + searchCountryTextInput.value);
     
 };
 
