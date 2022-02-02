@@ -62,10 +62,9 @@
 <!-- code block handles city and country search -->
 <script type="module">
 
-    import queryCity from "./jsmodules/querycity.js";
-    import queryCountry from "./jsmodules/querycountry.js";
-
-    var xhr = new XMLHttpRequest();
+    import {queryCity, queryCountry} from "./jsmodules/querylocations.js";
+    
+    
     let textInput = document.getElementById('searchCity');
     let searchList = document.getElementById('citySearchResults');
     let countryInput = document.getElementById('searchCountry');
@@ -77,7 +76,7 @@
 
         // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
-            queryCity(xhr, textInput, countryInput, searchList);
+            queryCity(textInput, countryInput, searchList);
         }
         return;
     });
@@ -90,11 +89,12 @@
 
         // only letters a-z will trigger database query
         if(reAlpha.test(event.data)) {
-            queryCountry(xhr, countryInput, countryList, searchList);
+            queryCountry(countryInput, countryList, searchList);
         };
     });
 
 </script>
+
 
 <!-- Function removes search result list from the DOM -->
 <script>
@@ -122,20 +122,22 @@
     let fahrenheit;
 </script>
 
+
 <!-- Function converts temp between fahrenheit/cel with button -->
 <script>
     let convertTemp = (kelvin) => {
+    
+    switch(fahrenheit) {
 
-    // For celcius
-    if(fahrenheit) {
-        fahrenheit = false;
-        temp.textContent = Math.round(kelvin - 273.15) + " C"; 
-    }
+        // for celcius
+        case true: 
+            fahrenheit = false;
+            temp.textContent = Math.round(kelvin - 273.15) + " C";
 
-    // For fahrenheitrenheit
-    else {
-        fahrenheit = true;
-        temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
+        // for fahrenheit
+        case false:
+            fahrenheit = true;
+            temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
     };
 };
 </script>
@@ -144,15 +146,17 @@
 <!-- Function displays city weather to the DOM -->
 <script>
     //TODO: display more data. e.g. high and low temp, wind, sunrise/sunset times
-    let displayData = (data) => {
-    console.log(data)
+    let displayWeatherData = (data) => {
+
+    console.log(data);
+
     // show the data div index.html
     dataWrapper.style.display = "flex";
 
     city.textContent = data.name;
     weatherImg.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
-    // default display temp in fahrenheitrenheit
+    // default display temp in fahrenheit
     fahrenheit = false;
     convertTemp(data.main.temp);
     
@@ -173,7 +177,7 @@
 
         // api call
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=65388c50a787be295df1ae5b1f2c37ea`, {mode: 'cors'});
-        let data = await response.json();
+        let weatherData = await response.json();
 
         // handle errors
         if(!response.ok) {
@@ -185,6 +189,6 @@
         };
         
         searchCity.value = ""
-        return(displayData(data))
+        return(displayWeatherData(weatherData))
     };
 </script>

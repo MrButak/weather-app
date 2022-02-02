@@ -1,4 +1,4 @@
-const dbQuery = require('../public/javascripts/dbqueries')
+const locations = require('../public/javascripts/locations')
 
 exports.index = (req, res, next) => {
 
@@ -7,12 +7,12 @@ exports.index = (req, res, next) => {
 
 exports.searchCity = (req, res, next) => {
 
-    let cities = dbQuery.searchByName(req.body.searchCity, req.body.searchCountry);
+    let cities = locations.searchByName(req.body.searchCity, req.body.searchCountry);
     res.status(200).json(cities)
 };
 
 exports.searchCountry = (req, res, next) => {
 
-    let countries = dbQuery.searchByCountry(req.body.searchCountry);
+    let countries = locations.searchByCountry(req.body.searchCountry);
     res.status(200).json(countries)  
 };
