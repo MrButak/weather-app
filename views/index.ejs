@@ -119,22 +119,22 @@
     let temp = document.getElementById('temp');
     let dataWrapper = document.getElementById('dataWrapper');
     let weatherImg = document.getElementById('weatherImg');
-    let fah;
+    let fahrenheit;
 </script>
 
-<!-- Function converts temp between fah/cel with button -->
+<!-- Function converts temp between fahrenheit/cel with button -->
 <script>
     let convertTemp = (kelvin) => {
 
     // For celcius
-    if(fah) {
-        fah = false;
+    if(fahrenheit) {
+        fahrenheit = false;
         temp.textContent = Math.round(kelvin - 273.15) + " C"; 
     }
 
-    // For fahrenheit
+    // For fahrenheitrenheit
     else {
-        fah = true;
+        fahrenheit = true;
         temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
     };
 };
@@ -152,8 +152,8 @@
     city.textContent = data.name;
     weatherImg.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
-    // default display temp in fahrenheit
-    fah = false;
+    // default display temp in fahrenheitrenheit
+    fahrenheit = false;
     convertTemp(data.main.temp);
     
     // toggle temp unit
