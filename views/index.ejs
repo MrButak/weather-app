@@ -43,7 +43,7 @@
             <p id="cityName"></p>
             <img id="weatherImg">
             <p id=currentTemp></p>
-            <button id="tempUnit">F/C</button>
+            <button id="tempUnitBtn">F/C</button>
         </div>
     </div>
 
@@ -68,7 +68,7 @@
     let countryList = document.getElementById('countrySearchResults');
     let reAlpha = /^[a-z]+$/i;
     
-    // Search city text input
+    // Search city text input listener event
     searchCityTextInput.addEventListener('input', (event) => {
 
         // only letters a-z will trigger database query
@@ -96,7 +96,7 @@
 <script>
     let clearSearchResults = (list) => {
 
-        // check to see if DOM list of cities contains anything, if so, remove them
+        // check to see if DOM list contains anything, if so, remove them
         if(list.childElementCount > 0) {
             let first = list.firstElementChild;
             while(first) {
@@ -129,11 +129,13 @@
         case true: 
             fahrenheit = false;
             currentTemp.textContent = Math.round(kelvin - 273.15) + " C";
+            return;
 
         // for fahrenheit
         case false:
             fahrenheit = true;
-            currentTemp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
+            currentTemp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F";
+            return; 
     };
 };
 </script>
@@ -157,8 +159,7 @@
     convertTemp(weatherData.main.temp);
     
     // toggle temp unit
-    document.getElementById('tempUnit').onclick = () => {
-
+    document.getElementById('tempUnitBtn').onclick = () => {
         convertTemp(weatherData.main.temp);      
     };
 };
