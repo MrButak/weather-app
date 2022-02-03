@@ -7,30 +7,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-  
+
   <body>
     <h2>Weather App</h2>
+
     <div class="formWrapper">
-      <form method="POST" action="/searchcity" id="searchCityForm">
-          <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
-          <button type="submit" id="submit"><i class="material-icons">search</i></button>
-      </form>
-  </div>
+        <form method="POST" action="/searchcity" id="searchCityForm">
+            <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
+            
+            <input type="text" name="searchCountry" id="searchCountry" placeholder="US" maxlength="2" size="1" value="US" required>
+        </form>
+    </div>
 
-  <% if(post){%>
-    <h5><%= tmp %></h5>
-  <%}%>
+  <!-- live seach list -->
+  <ul id=liveSearchResults>
+  </ul>
+  <ul id="countrySearchResults">
 
-  <p id="errorMessage" style="text-align: center;"></p>
+  </ul>
 
-  <div id="dataWrapper">
-      <p id="city"></p>
-      <img id="weatherImg">
-      <p id=temp></p>
-      <button id="tempUnit">F/C</button>
-  </div>
-    
+    <!-- if API call went bad, or any other errors happened-->
+    <p id="errorMessage" style="text-align: center;"></p>
+
+    <!-- div will display all weather information for selected city-->
+    <div id="dataWrapper">
+        <p id="city"></p>
+        <img id="weatherImg">
+        <p id=temp></p>
+        <button id="tempUnit">F/C</button>
+    </div>
+
   </body>
 </html>
+
+<!---------------------------- Start Javascript ------------------------------>
+
+<!-- Function handles city and country search -->
+<script type="module">
+
+    import queryCity from "./jsmodules/querycity.js";
+    import queryCountry from "./jsmodules/querycountry.js";
+
+    var xhr = new XMLHttpRequest();
+    let textInput = document.getElementById('searchCity');
+    let searchList = document.getElementById('liveSearchResults');
+    let countryInput = document.getElementById('searchCountry');
+    let countryList = document.getElementById('countrySearchResults');
+    let reAlpha = /^[a-z]+$/i;
+    
+    // Search city text input
+    document.getElementById('searchCity').addEventListener('input', (event) => {
+
+        // only letters a-z will trigger database query
+        if(reAlpha.test(event.data)) {
+            queryCity(xhr, textInput, countryInput, searchList);
+        }
+        return;
+    });
+
+    // Search country text input
+    document.getElementById('searchCountry').addEventListener('input', (event) => {
+        
+        // remove search list for cities
+        clearSearchResults(searchList)
+
+        // only letters a-z will trigger database query
+        if(reAlpha.test(event.data)) {
+            queryCountry(xhr, countryInput, countryList, searchList);
+        };
+    });
+
+</script>
+
+<!-- Function removes search result list from the DOM -->
+<script>
+    let clearSearchResults = (list) => {
+
+        // check to see if DOM list of cities contains anything, if so, remove them
+        if(list.childElementCount > 0) {
+            let first = list.firstElementChild;
+            while(first) {
+                first.remove();
+                first = list.firstElementChild;
+            };
+        };
+    };
+</script>
+
+<!--------------- API call and display weather results ---------------->
+<script>
+    // variables for view data
+    let errorMessage = document.getElementById('errorMessage');
+    let city = document.getElementById('city');
+    let temp = document.getElementById('temp');
+    let dataWrapper = document.getElementById('dataWrapper');
+    let weatherImg = document.getElementById('weatherImg');
+    let fah;
+</script>
+
+<!-- Function converts temp between fah/cel with button -->
+<script>
+    let convertTemp = (kelvin) => {
+
+    // For celcius
+    if(fah) {
+        fah = false;
+        temp.textContent = Math.round(kelvin - 273.15) + " C"; 
+    }
+
+    // For fahrenheit
+    else {
+        fah = true;
+        temp.textContent = Math.round((kelvin - 273.15) * 1.8 + 32) + " F"; 
+    };
+};
+</script>
+
+
+<!-- Function displays city weather to the DOM -->
+<script>
+    //TODO: display more data. e.g. high and low temp, wind, sunrise/sunset times
+    let displayData = (data) => {
+    console.log(data)
+    // show the data div index.html
+    dataWrapper.style.display = "flex";
+
+    city.textContent = data.name;
+    weatherImg.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+    // default display temp in fahrenheit
+    fah = false;
+    convertTemp(data.main.temp);
+    
+    // toggle temp unit
+    document.getElementById('tempUnit').onclick = () => {
+
+        convertTemp(data.main.temp);      
+    };
+};
+</script>
+
+<!-- function makes api call to get weather data -->
+<script>
+    async function fetchApi(e) {
+
+        // get input from the form
+        let cityId = e.target.dataset.cityid;
+
+        // api call
+        let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=65388c50a787be295df1ae5b1f2c37ea`, {mode: 'cors'});
+        let data = await response.json();
+
+        // handle errors
+        if(!response.ok) {
+            errorMessage.textContent = data.message;
+            dataWrapper.style.display = "";
+            searchCity.value = "";
+            // TODO send error message to DOM
+            return;
+        };
+        
+        searchCity.value = ""
+        return(displayData(data))
+    };
+</script>

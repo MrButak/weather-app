@@ -1,17 +1,18 @@
-const cityManager = require('../public/javascripts/cities')
+const dbQuery = require('../public/javascripts/dbqueries')
 
 exports.index = (req, res, next) => {
-    // ldToMemory.loadData();
-    let post = false;
-    res.render('index', {post: post});
+
+    res.render('index');
 };
 
 exports.searchCity = (req, res, next) => {
 
-    console.log(req.body)
-    let post = true;
-    let cities = cityManager.searchByName(req.body.searchCity);
-    res.render('index', {tmp: cities[0].name, post: post})
-    
-	// res.json(cities);
+    let cities = dbQuery.searchByName(req.body.searchCity, req.body.searchCountry);
+    res.status(200).json(cities)
+};
+
+exports.searchCountry = (req, res, next) => {
+
+    let countries = dbQuery.searchByCountry(req.body.searchCountry);
+    res.status(200).json(countries)  
 };

@@ -29,7 +29,9 @@
     align-items: center;
     justify-content: center;
 }
-
+#searchCountry {
+    width: 10%;
+}
 #dataWrapper {
     display: none;
     flex-direction: column;
