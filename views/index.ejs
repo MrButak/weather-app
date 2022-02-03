@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
+</head>
+  
+  <body>
+    <h2>Weather App</h2>
+    <div class="formWrapper">
+      <form method="POST" action="/searchcity" id="searchCityForm">
+          <input type="text" name="searchCity" id="searchCity" placeholder="Search City" required>
+          <button type="submit" id="submit"><i class="material-icons">search</i></button>
+      </form>
+  </div>
+
+  <% if(post){%>
+    <h5><%= tmp %></h5>
+  <%}%>
+
+  <p id="errorMessage" style="text-align: center;"></p>
+
+  <div id="dataWrapper">
+      <p id="city"></p>
+      <img id="weatherImg">
+      <p id=temp></p>
+      <button id="tempUnit">F/C</button>
+  </div>
+    
+  </body>
+</html>

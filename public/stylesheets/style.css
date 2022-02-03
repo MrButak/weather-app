@@ -1,0 +1,38 @@
+/*mobile first*/
+
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    /*univeral fluid text size*/
+    font-size: 1.1875rem;
+    font-size: clamp(1.1875rem, 1.175rem + 0.0625vw, 1.25rem);
+}
+* body {
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.formWrapper {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#searchCityForm {
+    display: flex;
+}
+
+#submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dataWrapper {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
